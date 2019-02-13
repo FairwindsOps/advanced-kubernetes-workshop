@@ -1,0 +1,165 @@
+{ "name": "Promote Canary to Production",
+  "application": "APP_NAME",
+  "appConfig": {},
+  "executionEngine": "v2",
+  "expectedArtifacts": [
+    {
+      "defaultArtifact": {
+        "kind": "default.gcs",
+        "name": "gs://PROJECT_ID-spinnaker/manifests/frontend.yml",
+        "reference": "gs://PROJECT_ID-spinnaker/manifests/frontend.yml",
+        "type": "gcs/object"
+      },
+      "id": "ca77c315-6e0a-4125-b757-296cdba696fd",
+      "matchArtifact": {
+        "kind": "gcs",
+        "name": "gs://PROJECT_ID-spinnaker/manifests/frontend.yml",
+        "type": "gcs/object"
+      },
+      "useDefaultArtifact": true,
+      "usePriorExecution": false
+    },
+    {
+      "defaultArtifact": {
+        "kind": "default.gcs",
+        "name": "gs://PROJECT_ID-spinnaker/manifests/backend.yml",
+        "reference": "gs://PROJECT_ID-spinnaker/manifests/backend.yml",
+        "type": "gcs/object"
+      },
+      "id": "d643ace2-b6a8-4984-bd7d-8c3e22623134",
+      "matchArtifact": {
+        "kind": "gcs",
+        "name": "gs://PROJECT_ID-spinnaker/manifests/backend.yml",
+        "type": "gcs/object"
+      },
+      "useDefaultArtifact": true,
+      "usePriorExecution": false
+    },
+    {
+      "defaultArtifact": {
+        "kind": "default.docker",
+        "name": "gcr.io/PROJECT_ID/frontend",
+        "reference": "gcr.io/PROJECT_ID/frontend",
+        "type": "docker/image"
+      },
+      "id": "8261af12-bfbd-4b01-a694-e1e6cc7354ab",
+      "matchArtifact": {
+        "kind": "docker",
+        "name": "gcr.io/PROJECT_ID/frontend",
+        "type": "docker/image"
+      },
+      "useDefaultArtifact": true,
+      "usePriorArtifact": true,
+      "usePriorExecution": false
+    },
+    {
+      "defaultArtifact": {
+        "kind": "default.docker",
+        "name": "gcr.io/PROJECT_ID/frontend",
+        "reference": "gcr.io/PROJECT_ID/frontend",
+        "type": "docker/image"
+      },
+      "id": "c6e4d420-f168-45dc-8513-12f6a177c140",
+      "matchArtifact": {
+        "kind": "docker",
+        "name": "gcr.io/PROJECT_ID/backend",
+        "type": "docker/image"
+      },
+      "useDefaultArtifact": true,
+      "usePriorArtifact": true,
+      "usePriorExecution": false
+    }
+  ],
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "stages": [
+    {
+      "account": "gke-central",
+      "canary": false,
+      "cloudProvider": "kubernetes",
+      "manifestArtifactAccount": "spinnaker-service-account",
+      "manifestArtifactId": "ca77c315-6e0a-4125-b757-296cdba696fd",
+      "moniker": {
+        "app": "APP_NAME"
+      },
+      "name": "Deploy Frontend to Production on GKE Central",
+      "namespace": "production",
+      "refId": "1",
+      "relationships": {
+        "loadBalancers": [],
+        "securityGroups": []
+      },
+      "requiredArtifactIds": [
+        "8261af12-bfbd-4b01-a694-e1e6cc7354ab"
+      ],
+      "requisiteStageRefIds": [],
+      "source": "artifact",
+      "type": "deployManifest"
+    },
+    {
+      "account": "gke-central",
+      "canary": false,
+      "cloudProvider": "kubernetes",
+      "manifestArtifactAccount": "spinnaker-service-account",
+      "manifestArtifactId": "d643ace2-b6a8-4984-bd7d-8c3e22623134",
+      "moniker": {
+        "app": "APP_NAME"
+      },
+      "name": "Deploy Backend to Production on GKE Central",
+      "namespace": "production",
+      "refId": "2",
+      "relationships": {
+        "loadBalancers": [],
+        "securityGroups": []
+      },
+      "requiredArtifactIds": [
+        "c6e4d420-f168-45dc-8513-12f6a177c140"
+      ],
+      "requisiteStageRefIds": [],
+      "source": "artifact",
+      "type": "deployManifest"
+    },
+    {
+      "account": "gke-central",
+      "cloudProvider": "kubernetes",
+      "kinds": [
+        "deployment"
+      ],
+      "labelSelectors": {
+        "selectors": [
+          {
+            "key": "canary",
+            "kind": "EQUALS",
+            "values": [
+              "true"
+            ]
+          }
+        ]
+      },
+      "location": "${ namespace }",
+      "name": "Delete all Canaries on GKE Central",
+      "options": {
+        "cascading": true
+      },
+      "refId": "3",
+      "requisiteStageRefIds": [
+        "1",
+        "2"
+      ],
+      "type": "deleteManifest"
+    }
+  ],
+  "triggers": [
+    {
+      "application": "APP_NAME",
+      "enabled": true,
+      "pipeline": "b388a6e4-4c96-409d-8a4c-85d6df758c5b",
+      "status": [
+        "successful"
+      ],
+      "type": "pipeline"
+    }
+  ],
+  "updateTs": "1534996411000"
+}

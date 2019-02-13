@@ -1,0 +1,163 @@
+{ "name": "Deploy Canary to Production",
+  "application": "APP_NAME",
+  "appConfig": {},
+  "executionEngine": "v2",
+  "expectedArtifacts": [
+    {
+      "defaultArtifact": {
+        "kind": "default.gcs",
+        "name": "gs://PROJECT_ID-spinnaker/manifests/frontend.yml",
+        "reference": "gs://PROJECT_ID-spinnaker/manifests/frontend.yml",
+        "type": "gcs/object"
+      },
+      "id": "60c1fe7f-88b4-407d-81ad-e5827aedfa07",
+      "matchArtifact": {
+        "kind": "gcs",
+        "name": "gs://PROJECT_ID-spinnaker/manifests/frontend.yml",
+        "type": "gcs/object"
+      },
+      "useDefaultArtifact": true,
+      "usePriorExecution": false
+    },
+    {
+      "defaultArtifact": {
+        "kind": "default.docker",
+        "name": "gcr.io/PROJECT_ID/frontend",
+        "reference": "gcr.io/PROJECT_ID/frontend",
+        "type": "docker/image"
+      },
+      "id": "60236679-11bb-4e73-8388-a754883ea61f",
+      "matchArtifact": {
+        "kind": "docker",
+        "name": "gcr.io/PROJECT_ID/frontend",
+        "type": "docker/image"
+      },
+      "useDefaultArtifact": true,
+      "usePriorArtifact": true,
+      "usePriorExecution": false
+    },
+    {
+      "defaultArtifact": {
+        "kind": "default.docker",
+        "name": "gcr.io/PROJECT_ID/backend",
+        "reference": "gcr.io/PROJECT_ID/backend",
+        "type": "docker/image"
+      },
+      "id": "5cbb5813-5dee-4f39-b00d-cfa13e78516b",
+      "matchArtifact": {
+        "kind": "docker",
+        "name": "gcr.io/PROJECT_ID/backend",
+        "type": "docker/image"
+      },
+      "useDefaultArtifact": true,
+      "usePriorArtifact": true,
+      "usePriorExecution": false
+    },
+    {
+      "defaultArtifact": {
+        "kind": "default.gcs",
+        "name": "gs://PROJECT_ID-spinnaker/manifests/backend.yml",
+        "reference": "gs://PROJECT_ID-spinnaker/manifests/backend.yml",
+        "type": "gcs/object"
+      },
+      "id": "62231ca9-dc78-42ce-9304-c78f32127fd8",
+      "matchArtifact": {
+        "kind": "gcs",
+        "name": "gs://PROJECT_ID-spinnaker/manifests/backend.yml",
+        "type": "gcs/object"
+      },
+      "useDefaultArtifact": true,
+      "usePriorExecution": false
+    }
+  ],
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "stages": [
+    {
+      "account": "gke-central",
+      "canary": true,
+      "cloudProvider": "kubernetes",
+      "manifestArtifactAccount": "spinnaker-service-account",
+      "manifestArtifactId": "60c1fe7f-88b4-407d-81ad-e5827aedfa07",
+      "moniker": {
+        "app": "APP_NAME"
+      },
+      "name": "Deploy Frontend Canary on GKE Central",
+      "namespace": "production",
+      "refId": "1",
+      "relationships": {
+        "loadBalancers": [],
+        "securityGroups": []
+      },
+      "requiredArtifactIds": [
+        "60236679-11bb-4e73-8388-a754883ea61f"
+      ],
+      "requisiteStageRefIds": [],
+      "source": "artifact",
+      "type": "deployManifest"
+    },
+    {
+      "account": "gke-central",
+      "canary": true,
+      "cloudProvider": "kubernetes",
+      "manifestArtifactAccount": "spinnaker-service-account",
+      "manifestArtifactId": "62231ca9-dc78-42ce-9304-c78f32127fd8",
+      "moniker": {
+        "app": "APP_NAME"
+      },
+      "name": "Deploy Backend Canary on GKE Central",
+      "namespace": "production",
+      "refId": "2",
+      "relationships": {
+        "loadBalancers": [],
+        "securityGroups": []
+      },
+      "requiredArtifactIds": [
+        "5cbb5813-5dee-4f39-b00d-cfa13e78516b"
+      ],
+      "requisiteStageRefIds": [],
+      "source": "artifact",
+      "type": "deployManifest"
+    },
+    {
+      "name": "Wait for Canary Results on GKE Central",
+      "refId": "3",
+      "requisiteStageRefIds": [
+        "1",
+        "2"
+      ],
+      "type": "wait",
+      "waitTime": 30
+    },
+    {
+      "failPipeline": true,
+      "judgmentInputs": [],
+      "name": "Manually validate Canary results on GKE Central",
+      "notifications": [],
+      "refId": "4",
+      "requisiteStageRefIds": [
+        "3"
+      ],
+      "type": "manualJudgment"
+    }
+  ],
+  "triggers": [
+    {
+      "application": "APP_NAME",
+      "enabled": true,
+      "expectedArtifactIds": [
+        "60c1fe7f-88b4-407d-81ad-e5827aedfa07",
+        "60236679-11bb-4e73-8388-a754883ea61f",
+        "5cbb5813-5dee-4f39-b00d-cfa13e78516b",
+        "62231ca9-dc78-42ce-9304-c78f32127fd8"
+      ],
+      "pipeline": "29597529-1df7-4f30-9b85-968c90d417a4",
+      "status": [
+        "successful"
+      ],
+      "type": "pipeline"
+    }
+  ],
+  "updateTs": "1534996524000"
+}
