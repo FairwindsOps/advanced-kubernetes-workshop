@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 # Define regions for GKE clusters
 export ONE=central
@@ -90,17 +91,23 @@ source $HOME/.bashrc
 # Create Terraform service account
 echo "${bold}Creating GCP service account for Terraform...${normal}"
 gcloud iam service-accounts create terraform --display-name terraform-sa
-export TERRAFORM_SA_EMAIL=$(gcloud iam service-accounts list \
-    --filter="displayName:terraform-sa" \
-    --format='value(email)')
+while [ -z "$TERRAFORM_SA_EMAIL" ]
+do
+  export TERRAFORM_SA_EMAIL=$(gcloud iam service-accounts list \
+      --filter="displayName:terraform-sa" \
+      --format='value(email)')
+done
 echo "********************************************************************************"
 
 # Create Spinnaker service account
 echo "${bold}Creating GCP service account for Spinnaker...${normal}"
 gcloud iam service-accounts create spinnaker --display-name spinnaker-service-account
-export SPINNAKER_SA_EMAIL=$(gcloud iam service-accounts list \
-    --filter="displayName:spinnaker-service-account" \
-    --format='value(email)')
+while [ -z "$SPINNAKER_SA_EMAIL" ]
+do
+  export SPINNAKER_SA_EMAIL=$(gcloud iam service-accounts list \
+      --filter="displayName:spinnaker-service-account" \
+      --format='value(email)')
+done
 echo "********************************************************************************"
 
 # Get email for the GCE default service account
@@ -243,4 +250,7 @@ export PROJECT=$(gcloud info --format='value(config.project)')
 cd $HOME/advanced-kubernetes-workshop/terraform
 sed -i -e s/PROJECTID/$PROJECT/g $HOME/advanced-kubernetes-workshop/terraform/main.tf
 terraform init
+
+set +x
+
 terraform apply -auto-approve

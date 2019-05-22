@@ -10,7 +10,7 @@ variable "vpc" { default = "k8s" }
 variable "gke-one-name" { default = "gke-central" }
 variable "gke-one-zone" { default = "us-central1-f" }
 variable "network" { default = "default" }
-variable "min_master_version" { default = "1.10" }
+variable "min_master_version" { default = "1.11" }
 variable "machine_type" { default = "n1-standard-4" }
 variable "image_type" { default = "cos" }
 

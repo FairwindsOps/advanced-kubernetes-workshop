@@ -10,7 +10,7 @@
 
 +  Clond Repo with workshop files
 +  Install following tools in Cloud Shell
-
+    
     +  `Helm` for application management
     +  `kubectx/kubens` for easy context switching
 
@@ -41,10 +41,10 @@
 +  Prepare Container Registry (5 mins)
     +  Push a simple `web-server` app to Container Registry with version tag `v1.0.0`
     +  Push `busyboxplus` to COntainer registry to simulate canary testing
-
+    
 +  Configure a **Deploy** pipeline in Spinnaker to deploy a web app to both clusters (5 mins)
 
-    +  Deploy Canary > Test Canary > Manual Judgement > Deploy to Prod
+    +  Deploy Canary > Test Canary > Manual Judgement > Deploy to Prod 
     +  Triggered via version tag (`v.*`) from Container Registry
 
 +  Manually deploy pipeline for `v1.0.0` to `gke-central` and `gke-east` (10 mins)
@@ -56,7 +56,7 @@
     +  Install NGINX LB in `gke-spinnaker` (outside of `gke-central` and `gke-east`)
     +  Configure a ConfigMap for `load-balancer.conf` with `gke-central` and `gke-east` Ingress IP addresses pointing to the webapp
     +  Expose NGINX as `Type:LoadBalancer` for Client access
-    +  Manipulate `weight` fields in the ConfigMap to manage traffic between `gke-central` and `gke-east`
+    +  Manipulate `weight` fields in the ConfigMap to manage traffic between `gke-central` and `gke-east` 
 
 ## Triggering application updates with Spinnaker (15 mins)
 
