@@ -380,3 +380,5 @@ resource "null_resource" "local-exec-1" {
   }
   depends_on = ["null_resource.gke-one-cluster","null_resource.gke-two-cluster","null_resource.gke-spinnaker-cluster"]
 }
+
+### Add readiness tests for: clusters, cluster rename, GCS bucket, GCR two images, PubSub topiubscs/scription, istio installs and setting, spinnaker install
