@@ -256,16 +256,12 @@ echo "**************************************************************************
 ###############
 ## Terraform ##
 ###############
+echo "${bold}Running terraform....${normal}"
+workshop_terraform-apply
+echo "${bold}Waiting 30s and then running terraform again....${normal}"
+sleep 30
+workshop_terraform-apply
 
-echo "${bold}Start terraform script...${normal}"
-cd $HOME/advanced-kubernetes-workshop/setup/terraform
-terraform init
-terraform apply \
-    -var "homedir=${HOME}" \
-    -var "project=$PROJECT" \
-    -var "istio-ver=$ISTIO_VERSION" \
-    -var "user=$GCP_USER" \
-    -auto-approve
-
+echo "${bold}Configuring Spinnaker using hal...${normal}"
 workshop_hal-config
 cd $HOME
