@@ -51,7 +51,7 @@ resource "null_resource" "gke-spinnaker-cluster" {
   }
 
   provisioner "local-exec" {
-    command = "helm upgrade --install istio ~/istio-${var.istio-ver}/install/kubernetes/helm/istio --namespace istio-system --values ~/istio-${var.istio-ver}/install/kubernetes/helm/istio/values-istio-demo-auth.yaml --kube-context ${google_container_cluster.gke-spinnaker.name}"
+    command = "helm upgrade --install istio ~/istio-${var.istio-ver}/install/kubernetes/helm/istio --namespace istio-system --values ~/advanced-kubernetes-workshop/setup/istio-values.yaml --kube-context ${google_container_cluster.gke-spinnaker.name}"
   }
 
   # /install istio

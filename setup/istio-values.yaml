@@ -1,0 +1,13 @@
+global:
+  controlPlaneSecurityEnabled: true
+
+  mtls:
+    # Default setting for service-to-service mtls. Can be set explicitly using
+    # destination rules or service annotations.
+enabled: true
+kiali:
+  enabled: true
+tracing:
+  enabled: true
+grafana:
+  enabled: true
