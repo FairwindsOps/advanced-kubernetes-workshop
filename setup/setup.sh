@@ -52,7 +52,7 @@ chmod +x $HOME/bin/workshop_hal-config
 cp $HOME/advanced-kubernetes-workshop/setup/create-pipelines.sh $HOME/bin/workshop_create-pipelines
 chmod +x $HOME/bin/workshop_create-pipelines
 
-cp $HOME/advanced-kubernetes-workshop/setup/generate_traffic.sh $HOME/bin/workshop_generate-traffic
+cp $HOME/advanced-kubernetes-workshop/setup/generate-traffic.sh $HOME/bin/workshop_generate-traffic
 chmod +x $HOME/bin/workshop_generate-traffic
 echo "********************************************************************************"
 
