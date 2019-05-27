@@ -47,7 +47,7 @@ resource "null_resource" "gke-one-cluster" {
   }
 
   provisioner "local-exec" {
-    command = "helm upgrade --install istio ~/istio-${var.istio-ver}/install/kubernetes/helm/istio --namespace istio-system --values ~/advanced-kubernetes-workshop/setup/istio-values.yaml--kube-context ${google_container_cluster.gke-one.name}"
+    command = "helm upgrade --install istio ~/istio-${var.istio-ver}/install/kubernetes/helm/istio --namespace istio-system --values ~/advanced-kubernetes-workshop/setup/istio-values.yaml --kube-context ${google_container_cluster.gke-one.name}"
   }
 
   provisioner "local-exec" {
