@@ -23,7 +23,7 @@ wait
 
 # Appy 50-50 Rule
 
-printf "\n${bold}Apply frontend VIRTUALSERVICE rule to send 50% traffic to prod 50% traffic to canary${normal}\n"
+printf "\n${bold}Apply frontend VIRTUALSERVICE rule to send 50 percent traffic to prod 50 percent traffic to canary${normal}\n"
 wait
 pe "kubectl apply -f ~/advanced-kubernetes-workshop/services/manifests/frontend-vs-50prod-50canary.yml --context gke-central"
 
