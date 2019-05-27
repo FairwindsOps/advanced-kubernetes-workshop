@@ -268,3 +268,4 @@ terraform apply \
     -auto-approve
 
 workshop_hal-config
+cd $HOME
