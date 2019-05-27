@@ -22,17 +22,17 @@ wait
 
 # Inspect GATEWAY for the frontend production service
 printf "\n${bold}Inspect GATEWAY for the frontend production service${normal}\n"
-pe "istioctl get gateway -n production --context gke-central -o yaml"
+pe "kubectl get gateway -n production --context gke-central -o yaml"
 wait
 
 # Inspect VIRTUALSERVICE for the frontend production service
 printf "\n${bold}Inspect VIRTUALSERVICE for the frontend production service${normal}\n"
-pe "istioctl get virtualservice frontend -n production --context gke-central -o yaml"
+pe "kubectl get virtualservice frontend -n production --context gke-central -o yaml"
 wait
 
 # Inspect DESTINATIONRULE for the frontend production service
 printf "\n${bold}Inspect DESTINATIONRULE for the frontend production service${normal}\n"
-pe "istioctl get destinationrule frontend -n production --context gke-central -o yaml"
+pe "kubectl get destinationrule frontend -n production --context gke-central -o yaml"
 wait
 
 # Inspect deployments in the production namespace
