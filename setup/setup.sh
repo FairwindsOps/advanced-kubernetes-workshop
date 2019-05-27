@@ -51,6 +51,9 @@ chmod +x $HOME/bin/workshop_hal-config
 
 cp $HOME/advanced-kubernetes-workshop/setup/create-pipelines.sh $HOME/bin/workshop_create-pipelines
 chmod +x $HOME/bin/workshop_create-pipelines
+
+cp $HOME/advanced-kubernetes-workshop/setup/generate_traffic.sh $HOME/bin/workshop_generate-traffic
+chmod +x $HOME/bin/workshop_generate-traffic
 echo "********************************************************************************"
 
 # Create SSH key
@@ -143,6 +146,7 @@ sed -i -e s/ONE/$ONE/g -e s/TWO/$TWO/g $HOME/bin/workshop_connect
 sed -i -e s/ONE/$ONE/g -e s/TWO/$TWO/g $HOME/bin/workshop_get-ingress
 
 sed -i -e s/ONE/$ONE/g -e s/TWO/$TWO/g $HOME/bin/workshop_hal-config
+sed -i -e s/ONE/$ONE/g -e s/TWO/$TWO/g $HOME/bin/workshop_generate-traffic
 
 sed -i -e s/PROJECT_ID/$PROJECT/g $HOME/advanced-kubernetes-workshop/services/frontend/skaffold.yaml
 sed -i -e s/PROJECT_ID/$PROJECT/g $HOME/advanced-kubernetes-workshop/services/frontend/k8s-frontend-dev.yml
