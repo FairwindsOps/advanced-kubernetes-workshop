@@ -6,10 +6,6 @@ resource "null_resource" "local-exec-1" {
   }
 
   provisioner "local-exec" {
-    command = "sed -e s/REGION1/${var.grafana-region-1}/g -e s/REGION2/${var.grafana-region-2}/g ~/advanced-kubernetes-workshop/setup/grafana.sh | sh -"
-  }
-
-  provisioner "local-exec" {
     command = "kubectl apply -f ~/advanced-kubernetes-workshop/services/manifests/namespaces.yml --context ${google_container_cluster.gke-one.name}"
   }
 

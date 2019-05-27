@@ -58,15 +58,6 @@ variable "gke-spinnaker-zone" {
   default = "us-central1-f"
 }
 
-# for grafana spinnaker
-variable "grafana-region-1" {
-  default = "central"
-}
-
-variable "grafana-region-2" {
-  default = "west"
-}
-
 # Istio version
 variable "istio-ver" {
   # Set by the setup script in a flag

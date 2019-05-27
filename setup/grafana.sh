@@ -1,11 +1,15 @@
 #!/bin/bash
 
-# Export GKE cluster regions
-export ONE=REGION1
-export TWO=REGION2
+if [ ! $CLOUD_SHELL ]; then
+    printf "\n${bold}You're not running inside Google Cloud Shell! This is not recommended. Exiting.\n\n${normal}"
+    return
+    exit 1
+fi
+
+source ~/advanced-kubernetes-workshop/setup/env.sh
 
 # Copy the dashboard json to the Halyard pod home dir
-kubectl cp ~/advanced-kubernetes-workshop/terraform/dashboard.json default/spin-spinnaker-halyard-0:/home/spinnaker/. --context gke-spinnaker
+kubectl cp ~/advanced-kubernetes-workshop/setup/dashboard.json default/spin-spinnaker-halyard-0:/home/spinnaker/. --context gke-spinnaker
 
 # Get the IP addresses of ONE and TWO Prometheus and Spinnaker Grafana
 export PROM_ONE=$(kubectl get pods -o wide -n istio-system --context gke-$ONE | grep prometheus | awk '{print $6}')

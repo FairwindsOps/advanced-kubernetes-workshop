@@ -264,4 +264,7 @@ workshop_terraform-apply
 
 echo "${bold}Configuring Spinnaker using hal...${normal}"
 workshop_hal-config
+
+echo "${bold}Setting up grafana dashboards...${normal}"
+~/advanced-kubernetes-workshop/setup/grafana.sh
 cd $HOME
