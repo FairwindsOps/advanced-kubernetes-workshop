@@ -6,5 +6,4 @@ if [ ! $CLOUD_SHELL ]; then
     exit 1
 fi
 
-
-kubectl exec -it $(kubectl get pod --context gke-spinnaker | grep fortio | awk '{ print $1 }') --context gke-spinnaker -c fortio /usr/local/bin/fortio -- load -c 50 -qps 1000 -t $1 $2
+kubectl exec -it $(kubectl get pod --context gke-spinnaker | grep fortio | awk '{ print $1 }') --context gke-spinnaker -c fortio -- fortio load -c 50 -qps 1000 -t $1 $2
