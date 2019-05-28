@@ -43,11 +43,11 @@ resource "null_resource" "gke-spinnaker-cluster" {
   }
 
   provisioner "local-exec" {
-    command = "kubectl --context ${google_container_cluster.gke-spinnaker.name} -n istio-system wait --for condition=complete job/istio-init-crd-10 --timeout=30s"
+    command = "kubectl --context ${google_container_cluster.gke-spinnaker.name} -n istio-system wait --for condition=complete job/istio-init-crd-10 --timeout=300s"
   }
 
   provisioner "local-exec" {
-    command = "kubectl --context ${google_container_cluster.gke-spinnaker.name} -n istio-system wait --for condition=complete job/istio-init-crd-11 --timeout=30s"
+    command = "kubectl --context ${google_container_cluster.gke-spinnaker.name} -n istio-system wait --for condition=complete job/istio-init-crd-11 --timeout=300s"
   }
 
   provisioner "local-exec" {
