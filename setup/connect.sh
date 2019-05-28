@@ -46,7 +46,7 @@ SERVICEGRAPH_PORT_1=8088
 SERVICEGRAPH_PORT_2=8089
 kubectl port-forward svc/servicegraph $SERVICEGRAPH_PORT_1:8088 -n istio-system --context gke-ONE >> /dev/null &
 echo "Servicegraph port opened on $SERVICEGRAPH_PORT_1 for gke-ONE"
-kubectl port-forward svc/servicegraph $SERVICEGRAPH_PORT_2:8089 -n istio-system --context gke-TWO >> /dev/null &
+kubectl port-forward svc/servicegraph $SERVICEGRAPH_PORT_2:8088 -n istio-system --context gke-TWO >> /dev/null &
 echo "Servicegraph port opened on $SERVICEGRAPH_PORT_2 for gke-TWO"
 
 
