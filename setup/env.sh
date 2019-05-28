@@ -24,5 +24,5 @@ export APP_NAME=myapp
 export GCP_USER=$(gcloud config get-value account)
 
 # Versions
-export ISTIO_VERSION=1.1.7
+export ISTIO_VERSION=1.1.1
 export TERRAFORM_VERSION=0.11.13
