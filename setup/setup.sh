@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SECONDS=0
+
 # Set speed, bold and color variables
 SPEED=40
 bold=$(tput bold)
@@ -269,3 +271,5 @@ workshop_connect
 echo "${bold}Setting up grafana dashboards...${normal}"
 ~/advanced-kubernetes-workshop/setup/grafana.sh
 cd $HOME
+
+echo $SECONDS
