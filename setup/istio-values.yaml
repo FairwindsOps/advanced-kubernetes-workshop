@@ -2,11 +2,11 @@ global:
   controlPlaneSecurityEnabled: true
   mtls:
     enabled: true
-  kiali:
-    enabled: true
-  tracing:
-    enabled: true
-  grafana:
-    enabled: true
-  servicegraph:
-    enabled: true
+kiali:
+  enabled: true
+tracing:
+  enabled: true
+grafana:
+  enabled: true
+servicegraph:
+  enabled: true
