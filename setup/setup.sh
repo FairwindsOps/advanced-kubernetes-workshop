@@ -34,7 +34,7 @@ source $HOME/advanced-kubernetes-workshop/setup/env.sh
 # Create bin path and install workshop commands
 echo "${bold}Creating local ~/bin folder...${normal}"
 mkdir -p $HOME/bin
-PATH=$PATH:$HOME/bin/
+PATH=$HOME/bin/:$PATH
 
 cp $HOME/advanced-kubernetes-workshop/setup/connect.sh $HOME/bin/workshop_connect
 chmod +x $HOME/bin/workshop_connect
