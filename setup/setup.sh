@@ -66,9 +66,11 @@ echo "${bold}Installing kubectx for easy cluster context switching...${normal}"
 if [ -d $HOME/kubectx ]; then
     rm -rf $HOME/kubectx
 fi
-git clone https://github.com/ahmetb/kubectx $HOME/kubectx
-ln -sf $HOME/kubectx/kubectx $HOME/bin/kubectx
-ln -sf $HOME/kubectx/kubens $HOME/bin/kubens
+curl -L -o $HOME/bin/kubens https://raw.githubusercontent.com/ahmetb/kubectx/v0.6.3/kubens
+curl -L -o $HOME/bin/kubectx https://raw.githubusercontent.com/ahmetb/kubectx/v0.6.3/kubectx
+
+chmod +x $HOME/bin/kubectx
+chmod +x $HOME/bin/kubens
 echo "********************************************************************************"
 
 # Install kubectl aliases
