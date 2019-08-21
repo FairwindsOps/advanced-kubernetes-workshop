@@ -63,8 +63,11 @@ fi
 
 # Install kubectx/kubens
 echo "${bold}Installing kubectx for easy cluster context switching...${normal}"
-if [ -d $HOME/kubectx ]; then
-    rm -rf $HOME/kubectx
+if [ -f $HOME/bin/kubectx ]; then
+    rm -f $HOME/bin/kubectx
+fi
+if [ -f $HOME/bin/kubens ]; then
+    rm -f $HOME/bin/kubens
 fi
 curl -L -o $HOME/bin/kubens https://raw.githubusercontent.com/ahmetb/kubectx/v0.6.3/kubens
 curl -L -o $HOME/bin/kubectx https://raw.githubusercontent.com/ahmetb/kubectx/v0.6.3/kubectx
