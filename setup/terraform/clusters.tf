@@ -1,6 +1,6 @@
 resource "google_container_cluster" "gke-one" {
   name               = "${var.gke-one-name}"
-  zone               = "${var.gke-one-zone}"
+  location           = "${var.gke-one-zone}"
   network            = "${var.vpc}"
   min_master_version = "${var.min_master_version}"
   initial_node_count = 4
@@ -23,7 +23,7 @@ resource "google_container_cluster" "gke-one" {
 
 resource "google_container_cluster" "gke-two" {
   name               = "${var.gke-two-name}"
-  zone               = "${var.gke-two-zone}"
+  location           = "${var.gke-two-zone}"
   network            = "${var.vpc}"
   min_master_version = "${var.min_master_version}"
   initial_node_count = 4
@@ -46,7 +46,7 @@ resource "google_container_cluster" "gke-two" {
 
 resource "google_container_cluster" "gke-spinnaker" {
   name               = "${var.gke-spinnaker-name}"
-  zone               = "${var.gke-spinnaker-zone}"
+  location           = "${var.gke-spinnaker-zone}"
   min_master_version = "${var.min_master_version}"
   network            = "${var.vpc}"
   initial_node_count = 4
