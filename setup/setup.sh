@@ -34,7 +34,7 @@ source $HOME/advanced-kubernetes-workshop/setup/env.sh
 # Create bin path and install workshop commands
 echo "${bold}Creating local ~/bin folder...${normal}"
 mkdir -p $HOME/bin
-PATH=$PATH:$HOME/bin/
+PATH=$HOME/bin/:$PATH
 
 cp $HOME/advanced-kubernetes-workshop/setup/connect.sh $HOME/bin/workshop_connect
 chmod +x $HOME/bin/workshop_connect
@@ -63,12 +63,14 @@ fi
 
 # Install kubectx/kubens
 echo "${bold}Installing kubectx for easy cluster context switching...${normal}"
-if [ -d $HOME/kubectx ]; then
-    rm -rf $HOME/kubectx
-fi
-git clone https://github.com/ahmetb/kubectx $HOME/kubectx
-ln -sf $HOME/kubectx/kubectx $HOME/bin/kubectx
-ln -sf $HOME/kubectx/kubens $HOME/bin/kubens
+rm -f $HOME/bin/kubectx || true
+rm -f $HOME/bin/kubens || true
+
+curl -Ls -o $HOME/bin/kubens https://raw.githubusercontent.com/ahmetb/kubectx/v0.6.3/kubens
+curl -Ls -o $HOME/bin/kubectx https://raw.githubusercontent.com/ahmetb/kubectx/v0.6.3/kubectx
+
+chmod +x $HOME/bin/kubectx
+chmod +x $HOME/bin/kubens
 echo "********************************************************************************"
 
 # Install kubectl aliases
