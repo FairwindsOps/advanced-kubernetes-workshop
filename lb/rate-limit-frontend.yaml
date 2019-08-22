@@ -9,17 +9,17 @@ spec:
   params:
     quotas:
     - name: requestcountquota.instance.istio-system
-      maxAmount: 500
+      maxAmount: 1000
       validDuration: 1s
       overrides:
       - dimensions:
           destination: frontend-canary
-        maxAmount: 1
-        validDuration: 5s
+        maxAmount: 10
+        validDuration: 1s
       - dimensions:
           destination: frontend
-        maxAmount: 2
-        validDuration: 5s
+        maxAmount: 40
+        validDuration: 1s
 ---
 apiVersion: config.istio.io/v1alpha2
 kind: instance
