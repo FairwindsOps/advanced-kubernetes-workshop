@@ -1,63 +1,53 @@
+---
 apiVersion: config.istio.io/v1alpha2
-kind: memquota
+kind: handler
 metadata:
-  name: handler
+  name: quotahandler
   namespace: istio-system
 spec:
-  quotas:
-  - name: requestcount.quota.istio-system
-    maxAmount: 900
-    validDuration: 1s
-    overrides:
-    - dimensions:
-        destination: frontend
-        destinationVersion: canary
-      maxAmount: 20
-      validDuration: 5s
-    - dimensions:
-        destination: frontend
-        destinationVersion: production
-      maxAmount: 75
-      validDuration: 5s
+  compiledAdapter: memquota
+  params:
+    quotas:
+    - name: requestcountquota.instance.istio-system
+      maxAmount: 500
+      validDuration: 1s
+      overrides:
+      - dimensions:
+          destination: frontend-canary
+        maxAmount: 1
+        validDuration: 5s
+      - dimensions:
+          destination: frontend
+        maxAmount: 2
+        validDuration: 5s
 ---
-apiVersion: "config.istio.io/v1alpha2"
-kind: quota
+apiVersion: config.istio.io/v1alpha2
+kind: instance
 metadata:
-  name: requestcount
+  name: requestcountquota
   namespace: istio-system
 spec:
-  dimensions:
-    source: source.labels["app"] | source.service | "unknown"
-    destination: destination.labels["app"] | destination.service | "unknown"
-    destinationVersion: destination.labels["version"] | "unknown"
----
-apiVersion: "config.istio.io/v1alpha2"
-kind: rule
-metadata:
-  name: quota
-  namespace: istio-system
-spec:
-  actions:
-  - handler: handler.memquota
-    instances:
-    - requestcount.quota
+  compiledTemplate: quota
+  params:
+    dimensions:
+      source: request.headers["x-forwarded-for"] | "unknown"
+      destination: destination.labels["app"] | destination.service.name | "unknown"
+      destinationVersion: destination.labels["version"] | "unknown"
 ---
 apiVersion: config.istio.io/v1alpha2
 kind: QuotaSpec
 metadata:
-  creationTimestamp: null
   name: request-count
   namespace: istio-system
 spec:
   rules:
   - quotas:
     - charge: 1
-      quota: requestcount
+      quota: requestcountquota
 ---
 apiVersion: config.istio.io/v1alpha2
 kind: QuotaSpecBinding
 metadata:
-  creationTimestamp: null
   name: request-count
   namespace: istio-system
 spec:
@@ -67,3 +57,17 @@ spec:
   services:
   - name: frontend
     namespace: production
+    #  - service: '*'  # Uncomment this to bind *all* services to request-count
+---
+apiVersion: config.istio.io/v1alpha2
+kind: rule
+metadata:
+  name: quota
+  namespace: istio-system
+spec:
+  # quota only applies if you are not logged in.
+  # match: match(request.headers["cookie"], "user=*") == false
+  actions:
+  - handler: quotahandler
+    instances:
+    - requestcountquota
