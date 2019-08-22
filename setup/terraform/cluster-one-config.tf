@@ -47,7 +47,7 @@ resource "null_resource" "gke-one-cluster" {
   }
 
   provisioner "local-exec" {
-    command = "kubectl -n istio-system apply -f ~/advanced-kubernetes/setup/kiali-secret.yaml --kube-context ${google_container_cluster.gke-one.name}"
+    command = "kubectl --context ${google_container_cluster.gke-one.name} -n istio-system apply -f ~/advanced-kubernetes/setup/kiali-secret.yaml"
   }
 
   provisioner "local-exec" {
