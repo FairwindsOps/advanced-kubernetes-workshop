@@ -1,7 +1,8 @@
 resource "null_resource" "gke-one-cluster" {
   depends_on = ["google_container_cluster.gke-one", "null_resource.gke-one-cluster"]
 
-  triggers { build_number = "${timestamp()}"
+  triggers {
+    build_number = "${timestamp()}"
   }
 
   provisioner "local-exec" {
