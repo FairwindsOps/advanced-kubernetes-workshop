@@ -1,8 +1,7 @@
 resource "null_resource" "gke-one-cluster" {
   depends_on = ["google_container_cluster.gke-one", "null_resource.gke-one-cluster"]
 
-  triggers {
-    build_number = "${timestamp()}"
+  triggers { build_number = "${timestamp()}"
   }
 
   provisioner "local-exec" {
@@ -47,6 +46,10 @@ resource "null_resource" "gke-one-cluster" {
   }
 
   provisioner "local-exec" {
+    command = "kubectl -n istio-system apply -f ~/advanced-kubernetes/setup/kiali-secret.yaml --kube-context ${google_container_cluster.gke-one.name}"
+  }
+
+  provisioner "local-exec" {
     command = "helm upgrade --install istio ~/istio-${var.istio-ver}/install/kubernetes/helm/istio --namespace istio-system --values ~/advanced-kubernetes-workshop/setup/istio-values.yaml --kube-context ${google_container_cluster.gke-one.name}"
   }
 
@@ -64,9 +67,5 @@ resource "null_resource" "gke-one-cluster" {
   }
   provisioner "local-exec" {
     command = "kubectl config set-context ${google_container_cluster.gke-one.name} --user ${google_container_cluster.gke-one.name}-token-user"
-  }
-
-  provisioner "local-exec" {
-    command = "kubectl -n istio-system apply -f ~/advanced-kubernetes/setup/kiali-secret.yaml --kube-context ${google_container_cluster.gke-one.name}
   }
 }
