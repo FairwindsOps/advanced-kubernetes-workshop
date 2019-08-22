@@ -41,15 +41,6 @@ echo "Jaeger Port opened on $JAEGER_PORT_1 for gke-ONE"
 kubectl port-forward svc/jaeger-query $JAEGER_PORT_2:16686 -n istio-system --context gke-TWO >> /dev/null &
 echo "Jaeger Port opened on $JAEGER_PORT_2 for gke-TWO"
 
-# Expose ServiceGraph
-SERVICEGRAPH_PORT_1=8088
-SERVICEGRAPH_PORT_2=8089
-kubectl port-forward svc/servicegraph $SERVICEGRAPH_PORT_1:8088 -n istio-system --context gke-ONE >> /dev/null &
-echo "Servicegraph port opened on $SERVICEGRAPH_PORT_1 for gke-ONE"
-kubectl port-forward svc/servicegraph $SERVICEGRAPH_PORT_2:8088 -n istio-system --context gke-TWO >> /dev/null &
-echo "Servicegraph port opened on $SERVICEGRAPH_PORT_2 for gke-TWO"
-
-
 # Expose KIALI on Port 20001 (1) and 20002 (2)
 KIALI_PORT_1=20001
 KIALI_PORT_2=20002
