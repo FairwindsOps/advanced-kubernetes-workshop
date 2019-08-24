@@ -47,6 +47,10 @@ resource "null_resource" "gke-one-cluster" {
   }
 
   provisioner "local-exec" {
+    command = "kubectl --context ${google_container_cluster.gke-one.name} -n istio-system wait --for condition=complete job/istio-init-crd-12 --timeout=300s"
+  }
+
+  provisioner "local-exec" {
     command = "kubectl --context ${google_container_cluster.gke-one.name} -n istio-system apply -f ~/advanced-kubernetes-workshop/setup/kiali-secret.yaml"
   }
 
