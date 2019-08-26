@@ -1,10 +1,6 @@
 # Fairwinds Advanced Kubernetes Workshop
 
-![Lab Diagram](diagrams/lab-diag.png)*Lab Diagram*
-
 # Lab Outline
-
-**Total estimated time: 1 hr 30 mins**
 
 ## Lab 0 - Setup
 
