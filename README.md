@@ -43,7 +43,7 @@
 + Stackdriver logging and monitoring
 + Visualization with Kiali
 
-# Lab Resources
+## Resources
 
-[Lab Guide](docs/lab_guide.pdf)
-[Slids](docs/slides.pdf)
++ [Lab Guide](docs/lab_guide.pdf)
++ [Slides](docs/slides.pdf)
