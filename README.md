@@ -1,7 +1,5 @@
 # Fairwinds Advanced Kubernetes Workshop
 
-Kubernetes is quickly becoming the platform of choice for many enterprise developers and devops.  As environments grow, a single Kubernetes cluster is no longer an option.  Deploying and running applications in multiple Kubernetes clusters comes with added complexity.  Thanks to the open source community, we have numerous tools to help us manage multiple clusters and application deployment across these clusters.  This lab focuses on best practices around operating multiple clusters, managing application deployments across multiple clusters, and advanced routing scenarios in a multi-cluster Kubernetes environment.
-
 ## Lab 0 - Setup
 
 ![Lab 0 Diagram](diagrams/lab-0.png)*Lab 0 Diagram*
