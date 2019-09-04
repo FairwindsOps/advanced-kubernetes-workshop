@@ -21,15 +21,7 @@ if [ ! $CLOUD_SHELL ]; then
     exit 1
 fi
 
-# PROJECT must be set for anything to work.
-if [ -z ${PROJECT+x} ]; then
-    printf "\n${bold}Then environment variable PROJECT needs to be set. Please use gcloud config set project <PROJECT_ID>, where the PROJECT_ID comes from your project.${normal}\n\n"
-    return
-    exit 1
-fi
-
 printf "\n${bold}Starting Setup Script....\n${normal}"
-
 
 ### Set initial important variables
 source $HOME/advanced-kubernetes-workshop/setup/env.sh
