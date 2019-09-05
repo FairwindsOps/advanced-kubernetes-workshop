@@ -50,6 +50,5 @@ printf "\n${bold}Generate some traffic to frontend production using fortio${norm
 wait
 printf "${bold}While traffic is being generated, open a new Cloud Shell window${normal}\n"
 
-export GKE_ONE_ISTIO_GATEWAY=$(kubectl get svc istio-ingressgateway -n istio-system -o jsonpath="{.status.loadBalancer.ingress[0].ip}" --context gke-central)
-pe "workshop_fortio 30m http://$GKE_ONE_ISTIO_GATEWAY"
+pe "workshop_generate-load"
 wait

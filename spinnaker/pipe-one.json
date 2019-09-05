@@ -200,7 +200,7 @@
     },
     {
       "failPipeline": true,
-      "instructions": "<p>Run <code>kubectl proxy &</code>, and check the frontend with <code>~/services/frontend/check.sh</code>.</p>",
+      "instructions": "<p>Check the frontend by connecting to the staging frontend. Run <code>workshop_connect</code> and then preview on port 4280.</p>",
       "judgmentInputs": [],
       "name": "Manual Judgment",
       "notifications": [],

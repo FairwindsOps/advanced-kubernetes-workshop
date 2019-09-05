@@ -21,7 +21,18 @@ if [ ! $CLOUD_SHELL ]; then
     exit 1
 fi
 
+# DEVSHELL_PROJECT must be set for anything to work.
+if [ -z ${DEVSHELL_PROJECT_ID+x} ]; then
+    printf "\n${bold}Then environment variable PROJECT needs to be set. Please use gcloud config set project <PROJECT_ID>, where the PROJECT_ID comes from your project.${normal}\n\n"
+    return
+    exit 1
+fi
+
 printf "\n${bold}Starting Setup Script....\n${normal}"
+
+### Reset the git repo so that we handle broken stuff
+cd $HOME/advanced-kubernetes-workshop
+git reset --hard
 
 ### Set initial important variables
 source $HOME/advanced-kubernetes-workshop/setup/env.sh
@@ -52,6 +63,9 @@ chmod +x $HOME/bin/workshop_hal-config
 
 cp $HOME/advanced-kubernetes-workshop/setup/create-pipelines.sh $HOME/bin/workshop_create-pipelines
 chmod +x $HOME/bin/workshop_create-pipelines
+
+cp $HOME/advanced-kubernetes-workshop/setup/generate-traffic.sh $HOME/bin/workshop_generate-traffic
+chmod +x $HOME/bin/workshop_generate-traffic
 echo "********************************************************************************"
 
 # Create SSH key
@@ -144,7 +158,7 @@ echo "**************************************************************************
 echo "${bold}Replacing the necessary variables in files....${normal}"
 sed -i -e s/ONE/$ONE/g -e s/TWO/$TWO/g $HOME/bin/workshop_connect
 sed -i -e s/ONE/$ONE/g -e s/TWO/$TWO/g $HOME/bin/workshop_get-ingress
-
+sed -i -e s/ONE/$ONE/g -e s/TWO/$TWO/g $HOME/bin/workshop_generate-traffic
 sed -i -e s/ONE/$ONE/g -e s/TWO/$TWO/g $HOME/bin/workshop_hal-config
 
 sed -i -e s/PROJECT_ID/$PROJECT/g $HOME/advanced-kubernetes-workshop/services/frontend/skaffold.yaml
@@ -272,5 +286,7 @@ workshop_connect
 echo "${bold}Setting up grafana dashboards...${normal}"
 ~/advanced-kubernetes-workshop/setup/grafana.sh
 cd $HOME
+
+workshop_create-pipelines
 
 echo $SECONDS

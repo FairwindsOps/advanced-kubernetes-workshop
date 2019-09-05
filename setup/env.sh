@@ -15,13 +15,7 @@ fi
 # DEVSHELL_PROJECT must be set for anything to work.
 if [ -z ${DEVSHELL_PROJECT_ID+x} ]; then
     printf "\n${bold}Then environment variable PROJECT needs to be set. Please use gcloud config set project <PROJECT_ID>, where the PROJECT_ID comes from your project.${normal}\n\n"
-    exit 1
-fi
-
-read -p "Using PROJECT = ${DEVSHELL_PROJECT_ID}. Is this correct? y/n" -n 1 -r
-echo    # (optional) move to a new line
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
+    return
     exit 1
 fi
 

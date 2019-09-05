@@ -14,7 +14,6 @@
 
 ## Lab 2 - Deploy
 
-+ Configure Spinnaker Pipelines
 + Trigger a Cloud Build of the the Docker image
 + Monitor Pipeline and trigger canary deployment
 
@@ -27,12 +26,6 @@
 + Rate Limiting
 + Circuit Breaking
 + mTLS
-
-### Global Load Balancing
-
-+ Nginx Configmap
-+ Access the load balancer
-+ Control Traffic
 
 ## Lab 4 - Monitor
 

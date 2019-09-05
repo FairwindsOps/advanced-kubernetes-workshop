@@ -18,7 +18,7 @@ wait
 
 # Inspect Grafana
 printf "\n${bold}Inspect Grafana incoming requests by source and destination${normal}\n"
-printf "\n${bold}Use Cloud Shell Web Prview to port 3000 and check the Central and West Service Dashboard${normal}\n"
+printf "\n${bold}Use Cloud Shell Web Preview to port 3000 and check the Central and West Service Dashboard${normal}\n"
 wait
 
 # Appy 50-50 Rule
@@ -105,11 +105,11 @@ printf "\n${bold}Rate limit - frontend prod to 75 req and frontend canary to 20 
 wait
 pe "kubectl apply -f ~/advanced-kubernetes-workshop/lb/rate-limit-frontend.yaml --context gke-central"
 
-# Inspect memquota
+# Inspect quotahandler
 
-printf "\n${bold}Inspect memquota${normal}\n"
+printf "\n${bold}Inspect quotahandler${normal}\n"
 wait
-pe "kubectl get memquota -n istio-system --context gke-central -o yaml"
+pe "kubectl get quotahandler -n istio-system --context gke-central -o yaml"
 
 # Inspect Grafana
 
@@ -140,13 +140,6 @@ pe "kubectl get destinationrule backend -n production --context gke-central -o y
 printf "\n${bold}Inspect Grafana incoming requests by source and destination${normal}\n"
 printf "\n${bold}Inspect the frontend and the backend services${normal}\n"
 wait
-
-# Check circuit breaker
-
-printf "\n${bold}Inspect traffic caught by the circuit breaker${normal}\n"
-wait
-export FRONTEND_POD=$(kubectl get pods -l app=frontend -n production --context gke-central | awk 'NR == 3 {print $1}')
-pe "kubectl exec -it $FRONTEND_POD -n production --context gke-central -c istio-proxy  -- sh -c 'curl localhost:15000/stats' | grep  '||backend.production' | grep pending"
 
 # Reset backend DESTINATIONRULE
 
@@ -198,84 +191,3 @@ pe "kubectl get policy -n staging --context gke-central -o yaml"
 printf "\n${bold}Confirm backend.staging test job does not have an istio-proxy${normal}\n"
 wait
 pe "kubectl describe job -n staging --context gke-central"
-
-# Global load balancing
-
-printf "\n${bold}Before configuring global load balancing, finish the spinnaker pipelines${normal}\n"
-wait
-
-# Create the NGINX configmap
-
-printf "\n${bold}Configure the NGINX configmap${normal}\n"
-wait
-export GKE_ONE_ISTIO_GATEWAY=$(kubectl get svc istio-ingressgateway -n istio-system -o jsonpath="{.status.loadBalancer.ingress[0].ip}" --context gke-central)
-export GKE_TWO_ISTIO_GATEWAY=$(kubectl get svc istio-ingressgateway -n istio-system -o jsonpath="{.status.loadBalancer.ingress[0].ip}" --context gke-west)
-pe "kubectx gke-spinnaker"
-pe "cd ~/advanced-kubernetes-workshop/lb"
-pe "sed -e s/CLUSTER1_INGRESS_IP/$GKE_ONE_ISTIO_GATEWAY\ weight=1/g -e s/CLUSTER2_INGRESS_IP/$GKE_TWO_ISTIO_GATEWAY\ weight=1/g ~/advanced-kubernetes-workshop/lb/glb-configmap-var.yaml > ~/advanced-kubernetes-workshop/lb/glb-configmap.yaml"
-
-# Confirm the NGINX configmap
-
-printf "\n${bold}Confirm the NGINX configmap${normal}\n"
-wait
-pe "cat ~/advanced-kubernetes-workshop/lb/glb-configmap.yaml"
-
-# Apply the NGINX configmap
-
-printf "\n${bold}Apply the NGINX configmap${normal}\n"
-wait
-pe "kubectl apply -f ~/advanced-kubernetes-workshop/lb/glb-configmap.yaml"
-
-# Create NGINX deployment and service
-
-printf "\n${bold}Create NGINX deployment and service${normal}\n"
-wait
-pe "kubectl apply -f ~/advanced-kubernetes-workshop/lb/nginx-dep.yaml"
-pe "kubectl apply -f ~/advanced-kubernetes-workshop/lb/nginx-svc.yaml"
-
-# Get the NGINX service loadbalancer IP address
-
-printf "\n${bold}Get the NGINX service loadbalancer IP address${normal}\n"
-wait
-pe "kubectl get service global-lb-nginx -w"
-
-# Send traffic to the NGINX loadbalancer IP address
-
-printf "\n${bold}Send traffic to the NGINX loadbalancer IP address${normal}\n"
-wait
-export GLB_IP=$(kubectl get service global-lb-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-pe "for i in `seq 1 20`; do curl -s $GLB_IP | grep gke | sed -e 's/<p>/ /g' -e 's/<\/p>/ /g'; done"
-
-# Change the NGINX configmap to send more traffic to gke-west vs gke-central
-
-printf "\n${bold}Change the NGINX configmap to send more traffic to gke-west vs gke-central${normal}\n"
-wait
-sed -e s/CLUSTER1_INGRESS_IP/$GKE_ONE_ISTIO_GATEWAY\ weight=1/g -e s/CLUSTER2_INGRESS_IP/$GKE_TWO_ISTIO_GATEWAY\ weight=4/g ~/advanced-kubernetes-workshop/lb/glb-configmap-var.yaml > ~/advanced-kubernetes-workshop/lb/glb-configmap-2.yaml
-pe "kubectl delete -f ~/advanced-kubernetes-workshop/lb/glb-configmap.yaml"
-pe "kubectl delete -f ~/advanced-kubernetes-workshop/lb/nginx-dep.yaml"
-pe "kubectl apply -f ~/advanced-kubernetes-workshop/lb/glb-configmap-2.yaml"
-pe "kubectl apply -f ~/advanced-kubernetes-workshop/lb/nginx-dep.yaml"
-
-# Inspect the new NGINX configmap
-
-printf "\n${bold}Inspect the new NGINX configmap${normal}\n"
-wait
-pe "kubectl get configmap nginx --context gke-spinnaker -o yaml | head -7"
-
-# Send traffic to the NGINX loadbalancer IP address
-
-printf "\n${bold}Send traffic to the NGINX loadbalancer IP address${normal}\n"
-wait
-pe "for i in `seq 1 20`; do curl -s $GLB_IP | grep gke | sed -e 's/<p>/ /g' -e 's/<\/p>/ /g'; done"
-
-# Stop fortio
-
-printf "\n${bold}Stop the fortio traffic generator in Cloud Shell window #1${normal}\n"
-wait
-
-# Generate traffic to the NGINX loadbalancer IP address
-
-printf "\n${bold}Generate traffic to the NGINX loadbalancer IP address and inspect Grafana${normal}\n"
-wait
-pe "workshop_fortio 30m http://$GLB_IP"
-

@@ -48,3 +48,9 @@ kubectl port-forward svc/kiali $KIALI_PORT_1:20001 -n istio-system --context gke
 echo "Kiali Port opened on $KIALI_PORT_1 for gke-ONE"
 kubectl port-forward svc/kiali $KIALI_PORT_2:20001 -n istio-system --context gke-TWO >> /dev/null &
 echo "Kiali Port opened on $KIALI_PORT_2 for gke-TWO"
+
+# Expose the Staging Frontend on 4280 and 4281
+STAGING_FRONTEND_PORT_1=4280
+STAGING_FRONTEND_PORT_2=4281
+kubectl port-forward -n staging --context gke-ONE svc/frontend $STAGING_FRONTEND_PORT_1:80 >> /dev/null &
+kubectl port-forward -n staging --context gke-TWO svc/frontend $STAGING_FRONTEND_PORT_2:80 >> /dev/null &
